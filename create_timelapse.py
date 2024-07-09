@@ -1,5 +1,6 @@
 import cv2
 import os
+import argparse
 
 
 def make_timelapse(image_folder, video_name, fps, image_ext=".jpg"):
@@ -22,7 +23,39 @@ def make_timelapse(image_folder, video_name, fps, image_ext=".jpg"):
     video.release()
 
 
+def main():
+    parser = argparse.ArgumentParser(
+        description="Create a timelapse video from images."
+    )
+    parser.add_argument(
+        "--folder",
+        "-f",
+        type=str,
+        required=True,
+        help="Path to the folder containing images.",
+    )
+    parser.add_argument(
+        "--output",
+        "-o",
+        type=str,
+        default="timelapse.mp4",
+        help="Output video file name.",
+    )
+    parser.add_argument(
+        "--fps", type=int, default=30, help="Frames per second in the output video."
+    )
+    parser.add_argument(
+        "--duration",
+        "-d",
+        type=float,
+        default=2.0,
+        help="Duration for each image in seconds.",
+    )
+
+    args = parser.parse_args()
+
+    make_timelapse(args.folder, args.output, args.fps, args.duration)
+
+
 if __name__ == "__main__":
-    image_folder = "path_to_images"
-    video_name = "timelapse.mp4"
-    make_timelapse(image_folder, video_name, fps=2)
+    main()
